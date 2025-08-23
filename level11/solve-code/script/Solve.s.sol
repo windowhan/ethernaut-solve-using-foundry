@@ -1,39 +1,3 @@
-# 지문
-
-이 엘리베이터는 건물의 꼭대기 층까지 데려다주지 않을 거예요. 그렇죠?
-
-도움이 될 만한 것들:
-
-가끔 Solidity는 약속을 잘 지키지 않음
-
-이 엘리베이터는 Building에서 사용될 것을 전제로 설계됨
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-interface Building {
-    function isLastFloor(uint256) external returns (bool);
-}
-
-contract Elevator {
-    bool public top;
-    uint256 public floor;
-
-    function goTo(uint256 _floor) public {
-        Building building = Building(msg.sender);
-
-        if (!building.isLastFloor(_floor)) {
-            floor = _floor;
-            top = building.isLastFloor(floor);
-        }
-    }
-}
-```
-
-# 풀이
-
-```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
@@ -77,4 +41,3 @@ contract SolveScript is Script {
         vm.stopBroadcast();
     }
 }
-```
