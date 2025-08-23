@@ -20,7 +20,7 @@ contract Loader {
     }
 }
 contract SolveScript is Script {
-    address public target = 0xeC4cFde48EAdca2bC63E94BB437BbeAcE1371bF3;
+    address public target = 0x4374EEcaAD0Dcaa149CfFc160d5a0552B1D092b0;
 
     function setUp() public {}
 
