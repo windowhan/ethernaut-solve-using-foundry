@@ -1,0 +1,6 @@
+[submodule "level1/solve-code/lib/forge-std"]
+	path = level1/solve-code/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "level2/solve-code/lib/forge-std"]
+	path = level2/solve-code/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
