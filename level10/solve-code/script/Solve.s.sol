@@ -1,57 +1,3 @@
-# 지문
-
-이 레벨의 목표는 컨트랙트에 있는 모든 자금을 훔치는 것입니다.
-
-도움이 될 수 있는 것들:
-
-신뢰할 수 없는 컨트랙트는 예상치 못한 위치에서 코드를 실행할 수 있음
-
-폴백(fallback) 메서드
-
-throw/revert 전파(bubbling) 개념
-
-때로는 컨트랙트를 공격하는 가장 좋은 방법이 또 다른 컨트랙트를 이용하는 것일 수 있음
-
-상단의 "?" 페이지에서 "Beyond the console" 섹션 참고
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.6.12;
-
-import "openzeppelin-contracts-06/math/SafeMath.sol";
-
-contract Reentrance {
-    using SafeMath for uint256;
-
-    mapping(address => uint256) public balances;
-
-    function donate(address _to) public payable {
-        balances[_to] = balances[_to].add(msg.value);
-    }
-
-    function balanceOf(address _who) public view returns (uint256 balance) {
-        return balances[_who];
-    }
-
-    function withdraw(uint256 _amount) public {
-        if (balances[msg.sender] >= _amount) {
-            (bool result,) = msg.sender.call{value: _amount}("");
-            if (result) {
-                _amount;
-            }
-            balances[msg.sender] -= _amount;
-        }
-    }
-
-    receive() external payable {}
-}
-```
-
-# 풀이 
-
-`withdraw` 함수안에 reentrancy point(`msg.sender.call{value: _amount}("");`)에서 내가 원하는 contract의 receive handler를 trigger할 수 있음 
-
-```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
@@ -99,5 +45,3 @@ contract SolveScript is Script {
         vm.stopBroadcast();
     }
 }
-
-```
