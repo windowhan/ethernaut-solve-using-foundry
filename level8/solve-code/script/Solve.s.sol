@@ -1,34 +1,3 @@
-# 지문
-금고를 열어 레벨을 통과하세요!
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-contract Vault {
-    bool public locked;
-    bytes32 private password;
-
-    constructor(bytes32 _password) {
-        locked = true;
-        password = _password;
-    }
-
-    function unlock(bytes32 _password) public {
-        if (password == _password) {
-            locked = false;
-        }
-    }
-}
-```
-
-# 풀이 
-
-문제의 contract를 보면 2번째 순서로 storage가 저장되어있는 것을 알 수 있음.
-즉, 이것의 storage slot은 1.
-cast를 사용해서 간단하게 password를 알아낼 수 있었음 
-
-```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
@@ -62,4 +31,3 @@ contract SolveScript is Script {
         vm.stopBroadcast();
     }
 }
-```
