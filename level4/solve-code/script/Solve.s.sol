@@ -1,36 +1,3 @@
-# 지문
-
-아래 컨트랙트의 소유권을 획득하여 이 레벨을 완료하세요.
-
-도움이 될 수 있는 것들:
-
-상단의 "?" 페이지에서 "Beyond the console" 섹션을 참고하세요.
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-contract Telephone {
-    address public owner;
-
-    constructor() {
-        owner = msg.sender;
-    }
-
-    function changeOwner(address _owner) public {
-        if (tx.origin != msg.sender) {
-            owner = _owner;
-        }
-    }
-}
-```
-
-# 풀이 
-`tx.origin`은 transaction을 발생시키는 EOA(개인지갑)을 의미함.
-`msg.sender`는 caller address를 의미함.
-즉 EOA가 직접적으로 호출하지만 않으면 `tx.origin != msg.sender` 조건을 충족시킬 수 있음.
-
-```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
@@ -63,4 +30,3 @@ contract SolveScript is Script {
         vm.stopBroadcast();
     }
 }
-```
