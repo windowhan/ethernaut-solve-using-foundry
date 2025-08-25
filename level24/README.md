@@ -122,13 +122,27 @@ contract PuzzleWallet {
 
 # 풀이 
 
-이 문제의 모티브가 된 실제 이슈는 다음 링크에 소개되어있음. (https://blog.trailofbits.com/2021/12/16/detecting-miso-and-opyns-msg-value-reuse-vulnerability-with-slither/)
+일단 첫번째로 PuzzleProxy의 slot 1(`pendingAdmin`), 그리고 PuzzleWallet의 slot 1(`owner`)이 충돌함.
+
+그래서 `proposeNewAdmin` 함수 호출을 통해서 `pendingAdmin`을 설정한다는게 `owner`를 설정하게끔되고 그뒤에는 `owner`만 호출할 수 있는 `addToWhitelist` 함수를 호출할 수 있어서 그것으로 내 contract를 whitelist에 추가한다음에 그뒤로 계속 플레이하면됨.
+
+이제 보면 PuzzleProxy의 slot 2(`admin`), 그리고 PuzzleWallet의 slot 2(`maxBalance`)가 충돌함.
+
+일단 `maxBalance`를 설정할 수 있는 조건을 보면 contract 내의 native token balance가 0인 상태에서 `setMaxBalance`를 호출하면됨
+
+
+
+
+문제 해결에 필요한 이슈의 실제 케이스는 다음 링크에 소개되어있음. (https://blog.trailofbits.com/2021/12/16/detecting-miso-and-opyns-msg-value-reuse-vulnerability-with-slither/)
 
 
 batch call이 delegationcall을 이용해서 동일 contract 내에 여러개의 함수를 한 call안에 실행시키게끔 구현해놓은게 많음
 여기서 중요한건 delegatecall batch call에서 `public payable` 또는 `external payable`이 적용되버리면 100원을 한번 입금했는데 10번 입금된 효과를 노릴 수도 있음.
 
-그러니까 delegatecall로 payable 함수를 여러번 호출한다고 여러번 징수되는게아니라 한번만 징수되는 이슈였음.
+그러니까 delegatecall로 payable 함수를 여러번 호출한다고 잔고 내의 native token이 여러번 징수되는게아니라 한번만 징수됨
+
+위에 언급한 요소들을 감안해서 문제를 해결하면됨.
+
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
